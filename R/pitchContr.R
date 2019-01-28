@@ -66,6 +66,8 @@ convertAudio <- function(fileName, factor = 0.5, shift = 0, autotune = FALSE){
   tonesInF <- fInTones %>%
     map_dbl(~tonesToFreq(.x, peakPitch, 12 / abs(factor)))
 
+  tonesInF <- tonesInF * sign(factor)
+
   if(autotune){
     # Filter out flats and sharps
     newPitchTier$t <- newPitchTier$t[abs(fInTones - round(fInTones)) < 0.25]
