@@ -39,7 +39,8 @@ praatSys <- function(args = filename,
       str_replace_all("/", "\\\\")
 
     wd <- wd %>%
-      str_replace_all("/", "\\\\")
+      str_replace_all("/", "\\\\") %>%
+      paste0("\"", ., "\"")
 
     slash <- "\\"}else slash <- "/"
 
