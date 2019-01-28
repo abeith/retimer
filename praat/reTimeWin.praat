@@ -1,12 +1,11 @@
 form Specify file
-    text name
-    text newName
+    text name A01
+    text newName retimed
+    text wd
 endform
 
-wd$ = "C:\Users\alistaib\OneDrive - University of Glasgow\Project\retiming\"
-
 inPath$ = wd$ + "audio\" + name$ + ".wav"
-inGrid$ = wd$ + "newGrids\test_" + name$ + ".TextGrid"
+inGrid$ = wd$ + "newGrids\" + name$ + "_tmp.TextGrid"
 outPath$ = wd$ + "outputs\" + name$ + "_" + newName$ + ".wav"
 
 sound = Read from file: inPath$

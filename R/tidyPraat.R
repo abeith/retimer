@@ -7,8 +7,20 @@ reTimeNix <- function(name, newName= "retimed", script = "retimeSpeech.praat", p
   system(paste(praatPath, args, scriptPath, name, newName))
 }
 
+# Check Praat path: Should work on any apt-get/homebrew *nix install or Windows
+# if Praat is installed to C:/Program Files...
+getPraatPath <- function(...){
+  if(.Platform$OS.type == "windows"){
+    return(getPraatPathWin(...))}
+
+  # No need in Unix based system
+  if(.Platform$OS.type == "unix"){
+    return("praat")
+  }
+}
+
 # Get Praat path for Windows
-getPraatPath <- function(appDir = "C:/Program Files") {
+getPraatPathWin <- function(appDir = "C:/Program Files") {
   list.files(appDir, "praat", full.names = T) %>%
     list.files("Praat.exe", full.names = TRUE) %>%
     str_replace_all("/", "\\\\") %>%
@@ -16,13 +28,18 @@ getPraatPath <- function(appDir = "C:/Program Files") {
 }
 
 #
-reTimeWin <- function(name, newName= "retimed", praatPath = NULL, args = "--run"){
-  if(is.null(praatPath)) praatPath <- getPraatPath()
+reTimeWin <- function(name = filename, newName= "retimed", praatPath = getPraatPath(), wd = getwd()){
   script <- system.file("praat", "reTimeWin.praat", package = "retimer") %>%
     str_replace_all("/", "\\\\") %>%
     paste0("\"", ., "\"")
 
-  system(paste(praatPath, args, script, name, newName))
+  wd <- wd %>%
+    str_replace_all("/", "\\\\") %>%
+    paste0("\\")
+
+  args <- paste("--run", script, name, newName, wd)
+  cat(paste("Running:", praatPath, args, "\n"))
+  system(paste(praatPath, args))
 }
 
 # Extract TextGrid as list of tibbles
@@ -77,4 +94,25 @@ loadGridLong <- function(file, drop = NULL, group = NULL){
   if(!is.null(group)){dat <- mutate(dat, group = cut(t1, cuts, right = FALSE))}
 
   return(dat)
+}
+
+writeGrid <- function(grid = newGrid, path = "./newGrids/%s_tmp.TextGrid", name = filename){
+
+  newGrid <- grid
+
+  #Create empty TextGrid with 2 tiers (order matters)
+  newTextGrid <- tg.createNewTextGrid(0, endPoint) %>%
+    tg.insertNewIntervalTier(1, "syllOld", 0, endPoint) %>%
+    tg.insertNewIntervalTier(2, "syllNew", 0, endPoint)
+
+  #Fill the TextGrids
+  newTextGrid$syllOld$t1 <- newGrid$t1
+  newTextGrid$syllOld$t2 <- newGrid$t2
+  newTextGrid$syllOld$label <- newGrid$label
+  newTextGrid$syllNew$t1 <- newGrid$newT1
+  newTextGrid$syllNew$t2 <- newGrid$newT2
+  newTextGrid$syllNew$label <- newGrid$label
+
+  #Write the grid to a file
+  tg.write(newTextGrid, sprintf(path, filename))
 }

@@ -1,6 +1,6 @@
 # Extract peak density value for a duration vector
-findPeak <- function(x){
-  durDensity <- density(x)
+findPeak <- function(x, ...){
+  durDensity <- density(x, ...)
   peakDensity <- durDensity$x[which.max(durDensity$y)]
   peakDensity
 }
