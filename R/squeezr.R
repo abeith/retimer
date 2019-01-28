@@ -32,7 +32,7 @@ praatSys <- function(args = filename,
                      wd = getwd(),
                      praatPath = getPraatPath()){
   require(tidyverse)
-  script <- system.file("praat", script, package = "retimer")
+  script <- system.file("extdata/praat", script, package = "retimer")
 
   if(.Platform$OS.type == "windows"){
     script <- script %>%
