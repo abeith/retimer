@@ -1,13 +1,13 @@
 form Specify file
-    text name
-    text newName
+    text path .
+    text newName new
     real start
     real end
+    text wd
 endform
 
-wd$ = "..\"
-inPath$ = wd$ + "audio\" + name$ + ".wav"
-outPath$ = wd$ + "outputs\" + name$ + "_" + newName$ + ".wav"
+inPath$ = wd$ + "/" + path$ + ".wav"
+outPath$ = wd$ + "/" + path$ + "_" + newName$ + ".wav"
 
 sound = Read from file: inPath$
 

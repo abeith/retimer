@@ -1,24 +1,36 @@
-# Function for finding a word in TextGrids
-findWord <- function(x, word = "speech"){
+#' extractWord
+#'
+#' Extract from a wav file with reference to a TextGrid
+#'
+#' @param x path to a TextGrid
+#' @param word word to search for
+#' @param tier name of word tier in TextGrid
+#' @param ignore_case default is `TRUE`
+#' @param instance instance of word in TextGrid to extract. Default extracts a random instance. Can also be numeric (row number)
+#' @param wd working directory for Praat to use. Accepts relative paths.
+#'
+#' @return Extracts section of wav file corresponding to word and saves in format name_wordi.wav where name is the original name, word is the word and x is the numeric instance.
+#' @export
+#'
+#' @seealso density
 
-  sprintf("./grids/%s.TextGrid", x) %>%
-    loadGrid() %>%
-    pluck("Word") %>%
-    filter(label == word) %>%
-    mutate(x = x)
-}
+extractWord <- function(x, word, tier = "Word", ignore_case = TRUE, instance = "random", wd = getwd()){
+  wd <- normalizePath(wd)
 
-# Function for extracting wav of word
-extractWord <- function(name, newName= "extracted", start = 10, end = 20, script = "/scripts/extractWord.praat", praatPath = "C:\\Program Files\\praat6043_win64\\Praat.exe", args = "--run"){
+  name <- stringr::str_extract(x, "[^/]*(?=.TextGrid)")
 
-    # Quote path if using Windows
-  if(.Platform$OS.type == "windows"){
-    praatPath <- paste0("\"", praatPath, "\"")}else{
-      praatPath <- "praat"
-    }
+  word_dat <- findWord(x, word = word, tier = tier, ignore_case = ignore_case) %>%
+    dplyr::mutate(row = dplyr::row_number())
 
-  scriptPath <- paste0("\"", getwd(), script, "\"")
-
-  system(paste(praatPath, args, scriptPath, name, newName, start, end))
-
+  if(instance == "random"){
+    word_dat <- dplyr::sample_n(word_dat, 1)
+  }else if(is.numeric(instance)){
+    word_dat <- dplyr::slice(word_dat, as.integer(instance))
+  }else{
+    warning("instance must be 'random' or an integer")
   }
+
+  args <- sprintf("%s %s%i %0.3f %0.3f", name, word_dat$label, word_dat$row, word_dat$t1, word_dat$t2)
+
+  praatScript(args = args, script = "extractWord.praat", wd = wd)
+}

@@ -1,12 +1,13 @@
 form Specify file
-    text path \sound\A01\A01
-    text newName new
+    text audio
+    text grid
+    text outfile
     text wd
 endform
 
-inPath$ = wd$ + path$ + ".wav"
-inGrid$ = wd$ + path$ + "_" + newName$ + ".TextGrid"
-outPath$ = wd$ + path$ + "_" + newName$ + ".wav"
+inPath$ = wd$ + audio$
+inGrid$ = wd$ + grid$
+outPath$ = wd$ + outfile$
 
 sound = Read from file: inPath$
 grid = Read from file: inGrid$

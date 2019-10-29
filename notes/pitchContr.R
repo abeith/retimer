@@ -7,45 +7,22 @@ noteFreq <- function(ref, intervals, tones = 12) {
   ref * ratio^intervals}
 
 # Convert frequency to tones and tones to frequency: specify tones in scale (i.e. 12-TET; 24-TET)
-# Equations adapted from http://www.sengpielaudio.com/calculator-centsratio.htm
 freqToTones <-  function(x, ref) {12*(log(x/ref)/log(2))}
 tonesToFreq <- function(intervals, ref, tones){2^(intervals/tones)*ref}
 
-# Resynthesise wav file with flat F0, .f can be any central tendency function
-flatF0 <- function(fileName, .f = findPeak){
-  # Extract Pitch Tier
-  praatSys(paste(fileName, "audio", "/"))
-
-  # Read Pitch Tier
-  pitchTier <- pt.read(paste0("outputs/", fileName, ".PitchTier"))
-
-  # Create new pitch tier
-  newPitchTier <- pitchTier
-  newPitchTier$t <- c(min(pitchTier$t), max(max(pitchTier$t)))
-  newPitchTier$f <- c(rep(.f(pitchTier$f), 2))
-
-  funName <- as.character(substitute(.f))
-
-  # Write PT
-  pt.write(newPitchTier, paste0("outputs/", fileName, "_", funName, ".PitchTier"))
-
-  # Resynthesise
-  praatSys(paste(fileName, funName, "/"), "reSynthPitch.praat")
-}
-
 #Resynthesise wav file with multiplied F0 tone range: Default halves range
 #shift and autotune are fun for music: Not so useful for speech
-convertAudio <- function(fileName, factor = 0.5, shift = 0, autotune = FALSE){
+convertAudio <- function(fileName, factor = 0.5, shift = 0, resolution = 0.1, min = 75, max = 500, stylize = 1, autotune = FALSE){
   # Extract Pitch Tier
-  praatSys(paste(fileName, "audio", "/"))
+  #praatSys(paste(fileName, "audio", "/", resolution, min, max, stylize))
 
   # Read Pitch Tier
-  pitchTier <- pt.read(paste0("outputs/", fileName, ".PitchTier"))
+  pitchTier <- rPraat::pt.read(paste0("outputs/", fileName, ".PitchTier"))
 
-  pt.plot(pitchTier)
+  rPraat::pt.plot(pitchTier)
 
   if(autotune){
-    peakPitch <- median(pitchTier$f) %>%
+    peakPitch <- stats::median(pitchTier$f) %>%
       freqToTones(440) %>%
       round %>%
       tonesToFreq(440, 12)
@@ -54,19 +31,19 @@ convertAudio <- function(fileName, factor = 0.5, shift = 0, autotune = FALSE){
   }
 
   # Plot density of pitch with vline on chosen peak
-  plot(density(pitchTier$f))
-  abline(v = peakPitch)
+  graphics::plot(stats::density(pitchTier$f))
+  graphics::abline(v = peakPitch)
 
   # Create new pitch tier
   newPitchTier <- pitchTier
 
   fInTones <- pitchTier$f %>%
-    map_dbl(~freqToTones(.x, peakPitch))
+    purrr::map_dbl(~freqToTones(.x, peakPitch))
 
-  fInTones <- fInTones * sign(factor)
+  fInTones <- (fInTones + shift) * sign(factor)
 
   tonesInF <- fInTones %>%
-    map_dbl(~tonesToFreq(.x, peakPitch, 12 / abs(factor)))
+    purrr::map_dbl(~tonesToFreq(.x, peakPitch, 12 / abs(factor)))
 
   if(autotune){
     # Filter out flats and sharps
@@ -77,13 +54,15 @@ convertAudio <- function(fileName, factor = 0.5, shift = 0, autotune = FALSE){
     newPitchTier$f <- tonesInF
   }
 
-  pt.plot(newPitchTier)
+  rPraat::pt.plot(newPitchTier)
+
+  outFile <- paste0(fileName, "_t", factor, "_p", shift)
 
   # Write PT
-  pt.write(newPitchTier, paste0("outputs/", fileName, "_", factor, ".PitchTier"))
+  rPraat::pt.write(newPitchTier, paste0("outputs/", outFile, ".PitchTier"))
 
   # Resynthesise
-  praatSys(paste(fileName, factor, "/"), "reSynthPitch.praat")
+  praatSys(paste(fileName, factor, shift, "/", resolution, min, max), "reSynthPitch.praat")
 }
 
 # Load all pitch tiers into a tibble for comparison. fileName is passed as pattern
@@ -99,16 +78,3 @@ pt.compare <- function(path, fileName, extension = ".PitchTier", ...){
   return(dat)
 }
 
-# 12 tone scale: Useful for plotting contours
-pianoScale <- function(){
-  tibble(notes = c(letters[1:7], letters[c(1, 3:4, 6:7)] %>%
-                   paste0("#")) %>%
-         sort %>%
-         .[c(4:12, 1:3)] %>%
-         paste0(rep(1:7, each = 12))) %>%
-  mutate(tones = row_number() - row_number()[notes == "a4"],
-         freq = tonesToFreq(tones, 440, 12))
-}
-
-pianoBreaks <- function(){pianoScale %>%
-  filter(!str_detect(notes, "#"))}
