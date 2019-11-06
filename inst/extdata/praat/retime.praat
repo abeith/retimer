@@ -5,9 +5,9 @@ form Specify file
     text wd
 endform
 
-inPath$ = wd$ + audio$
-inGrid$ = wd$ + grid$
-outPath$ = wd$ + outfile$
+inPath$ = wd$ + "/" + audio$
+inGrid$ = wd$ + "/" + grid$
+outPath$ = wd$ + "/" + outfile$
 
 sound = Read from file: inPath$
 grid = Read from file: inGrid$
