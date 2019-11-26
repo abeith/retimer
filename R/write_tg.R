@@ -15,13 +15,13 @@ write_tg <- function(x, name, path = "."){
   # Get time limits for attributes
   tmin <- x %>%
     dplyr::select(data) %>%
-    tidyr::unnest() %>%
+    tidyr::unnest(data) %>%
     dplyr::summarise(tmin = min(t1)) %>%
     dplyr::pull(tmin)
 
   tmax <- x %>%
     dplyr::select(data) %>%
-    tidyr::unnest() %>%
+    tidyr::unnest(data) %>%
     dplyr::summarise(tmax = max(t2)) %>%
     dplyr::pull(tmax)
 
@@ -38,7 +38,7 @@ write_tg <- function(x, name, path = "."){
   tg_b <- split(x, x$name) %>%
     purrr::map(~.x %>%
                  dplyr::select(data) %>%
-                 tidyr::unnest() %>%
+                 tidyr::unnest(data) %>%
                  as.list())
 
   # Concatenate lists

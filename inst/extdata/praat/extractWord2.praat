@@ -1,13 +1,10 @@
 form Specify file
-    text path .
-    text newName new
+    text inPath .
+    text outPath .
     real start
     real end
     text wd
 endform
-
-inPath$ = wd$ + "/" + path$ + ".wav"
-outPath$ = wd$ + "/" + path$ + "_" + newName$ + ".wav"
 
 sound = Read from file: inPath$
 

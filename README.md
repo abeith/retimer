@@ -1,19 +1,16 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# retimer
+retimer
+=======
 
 <!-- badges: start -->
-
 <!-- badges: end -->
+The retimer package allows you to control Praat from R to perform temporal manipulations on sound files.
 
-The retimer package allows you to control Praat from R to perform
-termporal manipulations on sound files.
+Installation
+------------
 
-## Installation
-
-You can install the development version of retimer from
-[GitHub](https://github.com/) with:
+You can install the development version of retimer from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")

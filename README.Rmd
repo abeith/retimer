@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The retimer package allows you to control Praat from R to perform termporal manipulations on sound files.
+The retimer package allows you to control Praat from R to perform temporal manipulations on sound files.
 
 ## Installation
 

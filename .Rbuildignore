@@ -4,3 +4,4 @@
 ^README\.Rmd$
 ^\./notes$
 ^\./demo$
+^\./R/c_wav\.R$
