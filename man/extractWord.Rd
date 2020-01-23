@@ -4,8 +4,14 @@
 \alias{extractWord}
 \title{extractWord}
 \usage{
-extractWord(x, word, tier = "Word", ignore_case = TRUE,
-  instance = "random", wd = getwd())
+extractWord(
+  x,
+  word,
+  tier = "Word",
+  ignore_case = TRUE,
+  instance = "random",
+  wd = getwd()
+)
 }
 \arguments{
 \item{x}{path to a TextGrid}

@@ -4,8 +4,7 @@
 \alias{praatScript}
 \title{praatScript}
 \usage{
-praatScript(args, script = "reTimeWin.praat", wd = getwd(),
-  praat = NULL)
+praatScript(args, script = "reTimeWin.praat", wd = getwd(), praat = NULL)
 }
 \arguments{
 \item{args}{arguements to pass to Praat script ("--run" not required)}

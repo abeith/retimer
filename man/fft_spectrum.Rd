@@ -4,12 +4,14 @@
 \alias{fft_spectrum}
 \title{fft_spectrum}
 \usage{
-fft_spectrum(signal, f, padding = 2048)
+fft_spectrum(signal, f, f_out = 80, padding = 512)
 }
 \arguments{
 \item{signal}{a speech signal}
 
 \item{f}{sampling frequency}
+
+\item{f_out}{output sampling frequency. Signal will be lowpass filtered at f_out/2}
 
 \item{padding}{length to zero pad signal to. If signal is longer than padding, this will be increased.}
 }

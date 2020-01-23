@@ -4,6 +4,7 @@
 #'
 #' @param signal a speech signal
 #' @param f sampling frequency
+#' @param f_out output sampling frequency. Signal will be lowpass filtered at f_out/2
 #' @param padding length to zero pad signal to. If signal is longer than padding, this will be increased.
 #'
 #' @return Returns a matrix with columns `freq` (frequency in Hz) and `pwr` (spectral power).
@@ -12,23 +13,23 @@
 #' @seealso fft_spectro
 #' @export
 
-fft_spectrum <- function(signal, f, padding = 2048){
+fft_spectrum <- function(signal, f, f_out = 80, padding = 512){
 
-  signal_80 <- voc_env(signal, f)
+  signal_down <- voc_env(signal, f, f_out)
 
-  result <- fft_spec_pwr(signal_80, 80, padding)
+  result <- fft_spec_pwr(signal_down, f_out, padding)
 
   return(result)
 }
 
-voc_env <- function(signal, f){
+voc_env <- function(signal, f, f_out){
   # Butterworth filter to extract vocalic signal
   Wn <- c(700, 1300) / (f / 2)
   bw_filt <- signal::butter(1, Wn, 'pass')
   voc_signal <- signal::filter(bw_filt, signal)
 
-  # Butterworth filter to lowpass at 10Hz
-  bw_low <- signal::butter(4, 10 / (f / 2), 'low')
+  # Butterworth filter to lowpass at f_out/2
+  bw_low <- signal::butter(4, (f_out / 2) / (f / 2), 'low')
   lowpass_signal = signal::filtfilt(bw_low, abs(voc_signal))
 
   #adj_samples = round(f * 0.045) + 1
@@ -38,29 +39,26 @@ voc_env <- function(signal, f){
   #plot(signal_mag/max(signal_mag))
   #lines(lowpass_signal/max(lowpass_signal), col = "red")
 
-  signal_80 <- signal::resample(lowpass_signal, 80, f)
+  signal_out <- signal::resample(lowpass_signal, f_out, f)
   #plot(signal_80, type = 'l')
 
   # mean centre
-  signal_80 = signal_80 - mean(signal_80);
+  signal_out = signal_out - mean(signal_out);
   #mean(signal_80)
 
   # scale
-  signal_80 <- signal_80 / max(signal_80)
+  signal_out <- signal_out / max(abs(signal_out))
   #mean(signal_80)
   #plot(signal_80, type = 'l')
 
-  return(signal_80)
+  return(signal_out)
 }
 
 fft_spec_pwr <- function(signal, f, padding){
 
   # Increase size of padding if signal is longer than manual setting
   if(length(signal) > padding){
-    binary_size <- intToBits(length(signal) - 1) %>%
-      as.integer()
-
-    padding <- 2**max(which(binary_size == 1))
+    padding <- 2^ceiling(log(length(signal), base = 2))
   }
 
   # zero pad the signal
@@ -72,10 +70,13 @@ fft_spec_pwr <- function(signal, f, padding){
   padded_len <- length(padded_signal)
 
   # get power from spectrum
-  pwr <- abs(fft_signal/padded_len)
+  pwr <- Mod(fft_signal/padded_len)
   pwr <- pwr[1:((padded_len/2)+1)]
   pwr[2:(length(pwr) - 1)] <- 2 * pwr[2:(length(pwr) - 1)]
-  freq = f * (0:(padded_len/2)) / padded_len
+  freq <- seq_along(pwr) - 1
+  freq <- f * freq / padded_len
+  freq <- freq[1:length(pwr)]
+#  freq = f * (0:(padded_len/2)) / padded_len
 
   result <- cbind(freq, pwr)
 

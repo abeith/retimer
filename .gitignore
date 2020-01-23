@@ -3,4 +3,7 @@
 .RData
 .Ruserdata
 script.vbs
-demo
+demos
+notes
+.DS_Store
+.Rbuildignore

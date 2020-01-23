@@ -4,8 +4,14 @@
 \alias{extractPitchTier}
 \title{extractPitchTier}
 \usage{
-extractPitchTier(x = "A01", res = 0.1, fmin = 50, fmax = 250,
-  stylize = 1, wd = getwd())
+extractPitchTier(
+  x = "A01",
+  res = 0.1,
+  fmin = 50,
+  fmax = 250,
+  stylize = 1,
+  wd = getwd()
+)
 }
 \arguments{
 \item{x}{name of wav file}

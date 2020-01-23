@@ -3,5 +3,7 @@
 ^LICENSE\.md$
 ^README\.Rmd$
 ^\./notes$
-^\./demo$
 ^\./R/c_wav\.R$
+^\./demos$
+^notes$
+^demos$
