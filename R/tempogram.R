@@ -45,7 +45,8 @@ tempogram <- function(x, sr = 250, window = 200, hop = 100){
   }
 
   tempo <- apply(acf_result, 2, function(x) find_tempo(x))
-  tempo <- as.numeric(tempo)
+  tempo[which(sapply(tempo, is.null))] <- NaN
+  tempo <- unlist(tempo)
   tempo <- cbind(t = as.numeric(times/sr), tempo = tempo/sr)
 
   colnames(acf_result) <- times
