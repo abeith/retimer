@@ -31,6 +31,7 @@ for i to n
   selectObject: durationTier
   Add point: startOld + 0.0001, factor
   Add point: endOld - 0.0001, factor
+endfor
 
 selectObject: manipulation
 plusObject: durationTier
