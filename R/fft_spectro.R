@@ -3,6 +3,7 @@
 #' Calculates low frequency power spectrogram of vocalic interval of speech signal. Following method of Tilsen & Johnson (2008)
 #'
 #' @param x a `tuneR` "Wave" object or the path to a .wav file.
+#' @param f_out the sample frequency for the output
 #' @param window_size number of samples to calculate each spectrum over
 #' @param padding length to zero pad signal to. If signal is longer than padding, this will be increased.
 #' @param plot if true a spectrogram will be plotted
@@ -13,7 +14,7 @@
 #' @seealso fft_spectrum
 #' @export
 
-fft_spectro <- function(x, window_size = 256, padding = 2048, plot = TRUE){
+fft_spectro <- function(x, f_out = 80, window_size = 256, padding = 2048, plot = TRUE){
 
   freq <- pwr <- NULL
 
@@ -28,19 +29,19 @@ fft_spectro <- function(x, window_size = 256, padding = 2048, plot = TRUE){
   }
 
   # Get vocalic envelope
-  env <- voc_env(wav@left, wav@samp.rate)
+  env <- voc_env(wav@left, wav@samp.rate, f_out)
 
-  cat(sprintf("Using %0.2fs window\n", window_size/80))
+  cat(sprintf("Using %0.2fs window\n", window_size/f_out))
 
   # define cutoffs
 
   low <- 1:(length(env) - window_size)
   high <- (window_size + 1):length(env)
   spec <- purrr::map2(low, high,
-                      ~fft_spec_pwr(env[.x:.y], 80, padding) %>%
+                      ~fft_spec_pwr(env[.x:.y], f_out, padding) %>%
                         tibble::as_tibble())
 
-  nested_spec <- tibble::tibble(t = (low + high)/160, #denominator is 2 (to average) * 80 (sample rate)
+  nested_spec <- tibble::tibble(t = (low + high)/(f_out * 2), #denominator is 2 (to average) * 80 (sample rate)
                                spec = spec)
 
   df_out <- nested_spec %>%

@@ -29,8 +29,8 @@ for i to n
   durationNew = endNew - startNew
   factor = durationNew / durationOld
   selectObject: durationTier
-  Add point: startOld + 0.01, factor
-  Add point: endOld - 0.01, factor
+  Add point: startOld + 0.001, factor
+  Add point: endOld - 0.001, factor
 endfor
 
 selectObject: manipulation
