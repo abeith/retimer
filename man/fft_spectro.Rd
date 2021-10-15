@@ -4,10 +4,12 @@
 \alias{fft_spectro}
 \title{fft_spectro}
 \usage{
-fft_spectro(x, window_size = 256, padding = 2048, plot = TRUE)
+fft_spectro(x, f_out = 80, window_size = 256, padding = 2048, plot = TRUE)
 }
 \arguments{
 \item{x}{a `tuneR` "Wave" object or the path to a .wav file.}
+
+\item{f_out}{the sample frequency for the output}
 
 \item{window_size}{number of samples to calculate each spectrum over}
 

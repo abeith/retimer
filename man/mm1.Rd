@@ -4,7 +4,9 @@
 \name{mm1}
 \alias{mm1}
 \title{mm1}
-\format{A tuneR "Wave" object:}
+\format{
+A tuneR "Wave" object:
+}
 \usage{
 mm1
 }

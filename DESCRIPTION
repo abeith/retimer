@@ -18,6 +18,5 @@ Imports:
     ggplot2,
     stringr,
     signal,
-    pracma,
-    rray
-RoxygenNote: 7.0.2
+    pracma
+RoxygenNote: 7.1.1

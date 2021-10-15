@@ -22,5 +22,5 @@ a list including:
    acf.m: tempogram in 2D matrix
 }
 \description{
-Produce a tempogram of a time series
+Produce a tempogram of a time series. No longer exported due to the rray requirement
 }

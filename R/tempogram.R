@@ -1,6 +1,6 @@
 #' tempogram
 #'
-#' Produce a tempogram of a time series
+#' Produce a tempogram of a time series. No longer exported due to the rray requirement
 #'
 #' @param x signal as vector
 #' @param sr sample rate
@@ -12,7 +12,6 @@
 #'    tempo: peak tempos for each time bin (f0 of tempogram)
 #'    acf.m: tempogram in 2D matrix
 #'
-#' @export
 
 tempogram <- function(x, sr = 250, window = 200, hop = 100){
 
