@@ -3,6 +3,7 @@
 export("%>%")
 export(extractPitchTier)
 export(extractWord)
+export(extract_env)
 export(fft_spectro)
 export(fft_spectrum)
 export(findPeak)
