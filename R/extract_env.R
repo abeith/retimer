@@ -31,6 +31,9 @@ extract_env <- function(x, fs, low_pass = 80, fs_out = 80, win = c(700, 1300), m
 
   ## Downsample
   signal_out <- signal::resample(lowpass_signal, fs_out, fs)
+  ## Do it in reverse to get the first point: Otherwise the initial value is 0
+  signal_rev <- rev(signal::resample(rev(lowpass_signal), fs_out, fs))
+  signal_out[1] <- signal_rev[1]
 
   ## mean centre
   if(mean_centre){
