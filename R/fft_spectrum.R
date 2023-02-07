@@ -25,12 +25,12 @@ fft_spectrum <- function(signal, f, f_out = 80, padding = 512){
 voc_env <- function(signal, f, f_out){
   # Butterworth filter to extract vocalic signal
   Wn <- c(700, 1300) / (f / 2)
-  bw_filt <- signal::butter(1, Wn, 'pass')
-  voc_signal <- signal::filter(bw_filt, signal)
+  bw_filt <- gsignal::butter(1, Wn, 'pass')
+  voc_signal <- gsignal::filter(bw_filt, signal)
 
   # Butterworth filter to lowpass at f_out/2
-  bw_low <- signal::butter(4, (f_out / 2) / (f / 2), 'low')
-  lowpass_signal = signal::filtfilt(bw_low, abs(voc_signal))
+  bw_low <- gsignal::butter(4, (f_out / 2) / (f / 2), 'low')
+  lowpass_signal = gsignal::filtfilt(bw_low, abs(voc_signal))
 
   #adj_samples = round(f * 0.045) + 1
   #lowpass_mm1 = lowpass_mm1[adj_samples:length(lowpass_mm1)]
@@ -39,7 +39,7 @@ voc_env <- function(signal, f, f_out){
   #plot(signal_mag/max(signal_mag))
   #lines(lowpass_signal/max(lowpass_signal), col = "red")
 
-  signal_out <- signal::resample(lowpass_signal, f_out, f)
+  signal_out <- gsignal::resample(lowpass_signal, f_out, f)
   #plot(signal_80, type = 'l')
 
   # mean centre

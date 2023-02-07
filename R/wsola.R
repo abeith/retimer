@@ -29,7 +29,7 @@ wsola <- function(x, s, win = 'hann', winLen = 1024, synHop = 512, tol = 512){
   winLenHalf <- round(winLen/2)
 
   if(win == 'hann'){
-    w <- signal::hanning(winLen)
+    w <- gsignal::hanning(winLen)
   }else if(length(win) == winLen){
     w <- win
   }else{
@@ -81,7 +81,7 @@ wsola <- function(x, s, win = 'hann', winLen = 1024, synHop = 512, tol = 512){
 }
 
 crossCorr <- function(x, y, winLen){
-  cc <- signal::conv(rev(x), y)
+  cc <- gsignal::conv(rev(x), y)
   cc <- cc[winLen:(length(cc) - winLen + 1)]
   return(cc)
 }

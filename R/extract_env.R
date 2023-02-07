@@ -23,12 +23,12 @@
 extract_env <- function(x, fs, low_pass = 80, fs_out = 80, win = c(700, 1300), mean_centre = FALSE, replace_init = FALSE){
   ## Bypass
   wn <- win / (fs / 2)
-  bw_pass <- signal::butter(1, wn, 'pass')
-  voc_signal <- signal::filter(bw_pass, x)
+  bw_pass <- gsignal::butter(1, wn, 'pass')
+  voc_signal <- gsignal::filter(bw_pass, x)
 
   ## Lowpass
-  bw_low <- signal::butter(4, low_pass / fs, 'low')
-  lowpass_signal <- signal::filtfilt(bw_low, abs(voc_signal))
+  bw_low <- gsignal::butter(4, low_pass / fs, 'low')
+  lowpass_signal <- gsignal::filtfilt(bw_low, abs(voc_signal))
 
   ## Downsample: gsignal::resample much faster than signal::resample
   signal_out <- gsignal::resample(lowpass_signal, fs_out, fs)
