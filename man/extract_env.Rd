@@ -10,7 +10,8 @@ extract_env(
   low_pass = 80,
   fs_out = 80,
   win = c(700, 1300),
-  mean_centre = FALSE
+  mean_centre = FALSE,
+  replace_init = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ extract_env(
 \item{win}{lower and upper frequencies for initial bypass filter. Default is 700Hz-1300Hz as in Tilson & Johnson (2008)}
 
 \item{mean_centre}{if TRUE signal will be scaled between 0 and 1 and then mean centred. Default is FALSE}
+
+\item{replace_init}{if TRUE (default is FALSE) first sample of result will be replaced with second sample to deal with initialisation issue in resampling}
 }
 \value{
 A matrix with time and amplitude
