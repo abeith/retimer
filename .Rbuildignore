@@ -7,3 +7,5 @@
 ^\./demos$
 ^notes$
 ^demos$
+^R/tempogram\.R$
+^CITATION\.cff$

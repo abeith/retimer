@@ -13,6 +13,8 @@ wsola(x, s, win = "hann", winLen = 1024, synHop = 512, tol = 512)
 
 \item{win}{window function. Default is 'hann' for hanning window. Can also be a custom window supplied as a vector}
 
+\item{winLen}{window length}
+
 \item{synHop}{synthesis window hop size}
 
 \item{tol}{tolerance for overlap delta}

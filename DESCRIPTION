@@ -17,6 +17,7 @@ Imports:
     tuneR,
     ggplot2,
     stringr,
-    pracma,
-    gsignal
+    signal,
+    gsignal,
+    methods
 RoxygenNote: 7.2.3

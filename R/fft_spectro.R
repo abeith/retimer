@@ -20,9 +20,13 @@ fft_spectro <- function(x, f_out = 80, window_size = 256, padding = 2048, plot =
 
 
   if(is.character(x)){
-    # Load wav
-    wav <- tuneR::readWave(x)
-  }else if(class(x) == "Wave"){
+    if(file.exists(x)){
+      # Load wav
+      wav <- tuneR::readWave(x)
+    }else{
+      stop(sprintf("%s is not a valid file path", x))
+    }
+  }else if(methods::is(x, "Wave")){
     wav <- x
   }else{
     stop("x must be a filepath to a wav or a tuneR wav object")

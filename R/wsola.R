@@ -5,6 +5,7 @@
 #' @param x an audio signal
 #' @param s a scaling factor or a list of two vector with anchor points
 #' @param win window function. Default is 'hann' for hanning window. Can also be a custom window supplied as a vector
+#' @param winLen window length
 #' @param synHop synthesis window hop size
 #' @param tol tolerance for overlap delta
 #'
@@ -35,11 +36,11 @@ wsola <- function(x, s, win = 'hann', winLen = 1024, synHop = 512, tol = 512){
   }else{
     stop('win can be \'hann\' for a hanning window or a vector with length of winLen for custom windows')
   }
-  
+
   ## Time stretch function
   outputLength <- anc_out[length(anc_out)]
   synWinPos <- seq(1, outputLength + winLenHalf, synHop)
-  anaWinPos <- round(pracma::interp1(anc_out, anc_in, synWinPos, extrap = T))
+  anaWinPos <- round(signal::interp1(anc_out, anc_in, synWinPos, extrap = T))
   anaHop <- c(0, anaWinPos[2:length(anaWinPos)] - anaWinPos[1:(length(anaWinPos) - 1)])
 
   ## wsola
