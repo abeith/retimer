@@ -82,7 +82,7 @@ wsola <- function(x, s, win = 'hann', winLen = 1024, synHop = 512, tol = 512){
 }
 
 crossCorr <- function(x, y, winLen){
-  cc <- gsignal::conv(rev(x), y)
+  cc <- signal::conv(rev(x), y)
   cc <- cc[winLen:(length(cc) - winLen + 1)]
   return(cc)
 }
