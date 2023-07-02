@@ -58,7 +58,7 @@ get_serial_anchors <- function(anc_in, anc_out, w_onsets, w_offsets, fs = NULL, 
       ## Stretch static points in source to avoid artifacts
       if(smudge){
         message('smudging')
-        sil_i <- which(anc_m[2:length(anc_points$anc_in),1] == anc_m[1:(length(anc_points$anc_in)-1),1])
+        sil_i <- which(anc_m[2:length(new_anc_in),1] == anc_m[1:(length(new_anc_in)-1),1])
         ## Allow 100ms of smudging
         smudge <- smudge*(fs/1000)
         anc_m[sil_i,1] <- anc_m[sil_i,1] - smudge

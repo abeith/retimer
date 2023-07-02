@@ -4,10 +4,12 @@
 \alias{read_tg}
 \title{read_tg}
 \usage{
-read_tg(file)
+read_tg(file, encoding = "auto")
 }
 \arguments{
 \item{file}{path to TextGrid file}
+
+\item{encoding}{Passed to rPraat::tg.read: 'auto' (default) will detect encoding, or can be set to 'UTF-8' (rPraat default)}
 }
 \value{
 Returns a nested tibble with `name`, `type` and `data`. `data` has the variables `t1`, `t2` and `label`
