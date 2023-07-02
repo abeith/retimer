@@ -12,7 +12,7 @@
 #' @return retimed audio signal as vector
 #'
 #' @references Driedger, J., Müller, M., Fourier, J., & Shannon, C. (2014). TSM Toolbox: MATLAB Implementations of Time-Scale Modification Algorithms. 8.
-#' @seealso fft_spectrum
+#' @seealso fft_spectrum, get_serials_anchors
 #' @export
 
 wsola <- function(x, s, win = 'hann', winLen = 1024, synHop = 512, tol = 512){
