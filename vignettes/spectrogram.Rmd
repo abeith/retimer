@@ -1,0 +1,77 @@
+---
+title: "spectrogram"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{spectrogram}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+  )
+
+## To silence warnings
+require(gsignal, warn.conflicts = F)
+require(tuneR, warn.conflicts = F)
+```
+
+```{r setup}
+library(ggplot2)
+library(dplyr, warn.conflicts = F)
+library(retimer)
+data(mm1)
+```
+
+Various packages implement a spectrogram method including `seewave`, `tuneR`, `phonTools`, and `gsignal`. The problem is that they don't return spectrograms in a standard format. With `retimer` you can use the `spectrogram()` wrapper to create a spectrogram with any of these packages and either return a `list` or a `tibble`.
+
+For example, we can use the `tuneR::powerspec()` method like so:
+
+```{r tuner-example}
+tuner_spec <- spectrogram(mm1, method = 'tuner', output = 'list')
+
+```
+
+and then plot it in base R:
+
+```{r tuner-plot, fig.width = 7, fig.height = 4, out.width = '100%'}
+with(tuner_spec, image(time, freq, amp, col = hcl.colors(20)))
+
+```
+
+Or we could output as a `tibble` (the default output) like so:
+
+```{r phontools-example}
+phontools_spec <- spectrogram(mm1, method = 'phontools')
+
+```
+
+and then plot it with `ggplot2`:
+
+```{r phontools-plot, fig.width = 7, fig.height = 3, out.width = '100%'}
+phontools_spec |>
+    ggplot() +
+    geom_raster(aes(t, f, fill = amp), show.legend = F) +
+    scale_fill_viridis_c()
+
+```
+
+We should get similar results with different methods:
+
+```{r all-example, fig.width = 7, fig.height = 10, out.width = '100%', warning = FALSE}
+list(seewave = 'seewave', phontools = 'phontools', tuner = 'tuner', gsignal = 'gsignal') |>
+    lapply(\(method) spectrogram(mm1, method = method)) |>
+    bind_rows(.id = 'method') |>
+    mutate(method = factor(method, levels = c('seewave', 'phontools', 'tuner', 'gsignal'))) |>
+    group_by(method) |>
+    mutate(amp = amp - min(amp),
+           amp = amp / max(amp)) |>
+    ungroup() |>
+    ggplot() +
+    geom_raster(aes(t, f, fill = amp), show.legend = F) +
+    facet_grid(rows = vars(method)) +
+    scale_fill_viridis_c()
+
+```
