@@ -7,3 +7,4 @@ demos
 notes
 .DS_Store
 .Rbuildignore
+/CRAN-SUBMISSION

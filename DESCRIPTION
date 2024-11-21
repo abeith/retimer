@@ -1,7 +1,7 @@
 Package: retimer
-Title: Retime and Repitch Speech
+Title: Retime and Analyse Speech Signals
 Version: 0.1.2
-Authors@R: person("Alistair", "Beith", email = "alistair.beith@gmail.com", role = c("aut", "cre"))
+Authors@R: person("Alistair", "Beith", email = "alistair.beith@gmail.com", role = c("aut", "cre", "cph"))
 Description: Tools used for retiming and analysis of speech with R and Praat.
 Depends: R (>= 3.5)
 License: MIT + file LICENSE

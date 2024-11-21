@@ -4,12 +4,12 @@
 \name{retimer-package}
 \alias{retimer}
 \alias{retimer-package}
-\title{retimer: Retime and Repitch Speech}
+\title{retimer: Retime and Analyse Speech Signals}
 \description{
 Tools used for retiming and analysis of speech with R and Praat.
 }
 \author{
-\strong{Maintainer}: Alistair Beith \email{alistair.beith@gmail.com}
+\strong{Maintainer}: Alistair Beith \email{alistair.beith@gmail.com} [copyright holder]
 
 }
 \keyword{internal}

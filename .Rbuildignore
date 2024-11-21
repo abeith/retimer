@@ -9,3 +9,5 @@
 ^demos$
 ^R/tempogram\.R$
 ^CITATION\.cff$
+^cran-comments\.md$
+^CRAN-SUBMISSION$
