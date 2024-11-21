@@ -6,6 +6,8 @@
 #' @param fs sample rate if supplying the signal as a vector
 #' @param method spectrogram implementation to use
 #' @param output format of output
+#' @param wintime length of analysis window in ms
+#' @param steptime interval between steps in ms
 #'
 #' @return Returns a spectrogram in the desired format
 #'
@@ -20,7 +22,7 @@ spectrogram <- function(x, fs = NULL, method, output = 'tibble', wintime = 25, s
     } else if(is.vector(x)) {
         sig <- x
         if (is.null(fs)) stop("Sampling frequency (fs) cannot be NULL if x is a vector")
-    } else if(class(x) == "Wave"){
+    } else if(is(x, "Wave")){
         sig <- x@left
         fs <- x@samp.rate
     } else {
@@ -29,23 +31,52 @@ spectrogram <- function(x, fs = NULL, method, output = 'tibble', wintime = 25, s
 
     if (is.null(method)) {
         stop("Method cannot be NULL. Available methods are seewave and phonTools.")
-    } else if (method == 'seewave') {
+    } else if (tolower(method) == 'seewave') {
         spec <- seewave_spectro(sig, fs, wintime = wintime, steptime = steptime)
-    } else if (method == 'phonTools') {
+    } else if (tolower(method) == 'phontools') {
         spec <- phontools_spectro(sig, fs, wintime = wintime, steptime = steptime)
-    } else if (method == 'tuneR') {
+    } else if (tolower(method) == 'tuner') {
         spec <- tuner_spectro(sig, fs, wintime = wintime, steptime = steptime)
+    } else if (tolower(method) == 'gsignal') {
+        spec <- gsignal_spectro(sig, fs, wintime = wintime, steptime = steptime)
+    } else {
+        stop("Unknown method argument. Available methods are seewave, phonTools, tuneR, and gsignal.")
     }
 
+    if (output == 'list') {
+        return(spec)
+    } else if (output == 'tibble') {
+        tbl <- spec2tbl(spec)
+        return(tbl)
+    }
+    
+
+}
+
+spec2tbl <- function(spec) {
+    with(spec, tibble::tibble(t = rep(time, times = length(freq)), f = rep(freq, each = length(time)), amp = as.vector(amp)))
+}
+
+gsignal_spectro <- function(sig, fs, wintime, steptime) {
+
+    wl <- round(fs*wintime/1e3)
+    step <- round(fs*steptime/1e3)
+
+    gspec <- gsignal::specgram(sig, n = wl, fs = fs, overlap = wl - step)
+    spec <- list()
+    spec$amp <- gspec$S |> t() |> Mod()
+    spec$amp <- 20 * log10(spec$amp)
+    spec$freq <- gspec$f
+    spec$time <- gspec$t
     return(spec)
 }
+
+ceilpow2 <- \(x) 2^ceiling(log2(x))
 
 seewave_spectro <- function(sig, fs, wintime, steptime) {
 
     wl <- round(fs*wintime/1e3)
-
     step <- fs*steptime/1e3
-
     ovlp <- 100 * (1 - (step/wl))
     
     spec <- seewave::spectro(sig, fs, plot = F, wl = wl, ovlp = ovlp)
@@ -70,7 +101,7 @@ phontools_spectro <- function(sig, fs, wintime, steptime) {
     spec <- list()
     attributes(spec) <- spec_attr
     spec$time <- as.numeric(attr(phontools_spec$spectrogram, "dimnames")[[1]])/1e3
-    spec$freq <- as.numeric(attr(phontools_spec$spectrogram, "dimnames")[[2]])
+    spec$freq <- as.numeric(attr(phontools_spec$spectrogram, "dimnames")[[2]]) |> regularise_vector()
     spec$amp <- phontools_spec$spectrogram
 
     attributes(spec$amp)$dimnames <- NULL
@@ -78,6 +109,9 @@ phontools_spectro <- function(sig, fs, wintime, steptime) {
 
     return(spec)
 }
+
+regularise_vector <- function(x) seq(min(x), max(x), length.out = length(x))
+
 
 tuner_spectro <- function(sig, fs, wintime, steptime) {
     
@@ -89,10 +123,9 @@ tuner_spectro <- function(sig, fs, wintime, steptime) {
     k <- fs / (wintime*1e3) / 2
     
     spec <- list(
-        time = steptime * seq_len(ncol(tuner_spec)) / 1e3,
+        time = seq(from = 0, by = steptime / 1e3, length.out = ncol(tuner_spec)),
         freq = (fs/2)*seq_len(length.out = nrow(tuner_spec))/nrow(tuner_spec),
-        amp = t(tuner_spec),
-        call = spec_call
+        amp = t(tuner_spec)
     )
     return(spec)
 }
