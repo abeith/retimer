@@ -14,7 +14,7 @@
 #' @export
 #'
 
-spectrogram <- function(x, fs = NULL, method, output = 'tibble', wintime = 25, steptime = 10, pad_end = FALSE) {
+spectrogram <- function(x, fs = NULL, method, output = 'tibble', wintime = 25, steptime = 10) {
     if(is.character(x)){
         wav <- read_wav_or_mp3(x)
         sig <- wav@left
@@ -27,12 +27,6 @@ spectrogram <- function(x, fs = NULL, method, output = 'tibble', wintime = 25, s
         fs <- x@samp.rate
     } else {
         stop("Unexpected argument for x")
-    }
-
-    if (pad_end) {
-        wl <- round(fs*wintime/1e3)
-        pad_len <- wl - (length(sig) %% wl)
-        sig <- c(sig, rep(0, pad_len))
     }
     
     if (is.null(method)) {
