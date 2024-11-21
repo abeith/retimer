@@ -10,7 +10,8 @@ spectrogram(
   method,
   output = "tibble",
   wintime = 25,
-  steptime = 10
+  steptime = 10,
+  pad_end = FALSE
 )
 }
 \arguments{

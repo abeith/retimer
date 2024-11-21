@@ -138,67 +138,17 @@ test_that("Package defaults can be achieved with wrapper", {
 ## Visual check
 ## Error in seewave method? Looks like accumulated rounding error
 
-## Check if the defaults of any package defaults give correct alignment
-
+## devtools::load_all()
 ## library(tidyverse)
 
-## fs <- mm1@samp.rate
-
-## ## With seewave defaults
-## wintime <- 1e3 * 512 / mm1@samp.rate
-## steptime <- 1e3 * 512 / mm1@samp.rate
-## list(seewave = 'seewave', phontools = 'phontools', tuner = 'tuner', gsignal = 'gsignal') |>
-##     map(\(method) spectrogram(mm1, method = method, wintime = wintime, steptime = steptime)) |>
-##     bind_rows(.id = 'method') |>
-##     mutate(method = factor(method, levels = c('seewave', 'phontools', 'tuner', 'gsignal'))) |>
-##     group_by(method) |>
-##     mutate(amp = amp - min(amp),
-##            amp = amp / max(amp)) |>
-##     ungroup() |>
-##     ggplot() +
-##     geom_raster(aes(t, f, fill = amp), alpha = 0.9, show.legend = F) +
-##     geom_vline(xintercept = length(mm1) / fs, colour = 'red') +
-##     scale_x_continuous(expand = c(0,0),
-##                        breaks = seq_len(500) * steptime * 2e-3,
-##                        minor_breaks = seq_len(1000) * steptime * 1e-3, labels = \(x) sprintf("%0.3f", x)
-##                        ) +
-##     scale_y_continuous(expand = c(0,0)) +
-##     coord_cartesian(xlim = c(2.5, 2.66)) +
-##     facet_wrap(. ~ method, nrow = 4) +
-##     scale_fill_viridis_c()
-
-## plot(1)
-
-## devtools::load_all()
-## ## With phontools defaults
-## wintime <- 5
-## steptime <- length(mm1) / mm1@samp.rate
-## list(seewave = 'seewave', phontools = 'phontools', tuner = 'tuner', gsignal = 'gsignal') |>
-##     map(\(method) spectrogram(mm1, method = method, wintime = wintime, steptime = steptime)) |>
-##     bind_rows(.id = 'method') |>
-##     mutate(method = factor(method, levels = c('seewave', 'phontools', 'tuner', 'gsignal'))) |>
-##     group_by(method) |>
-##     mutate(amp = amp - min(amp),
-##            amp = amp / max(amp)) |>
-##     ungroup() |>
-##     ggplot() +
-##     geom_raster(aes(t, f, fill = amp), alpha = 0.9, show.legend = F) +
-##     geom_vline(xintercept = length(mm1) / fs, colour = 'red') +
-##     scale_x_continuous(expand = c(0,0),
-##                        breaks = seq_len(500) * steptime * 2e-3,
-##                        minor_breaks = seq_len(1000) * steptime * 1e-3, labels = \(x) sprintf("%0.3f", x)
-##                        ) +
-##     scale_y_continuous(expand = c(0,0)) +
-##     coord_cartesian(xlim = c(2.5, 2.66)) +
-##     facet_wrap(. ~ method, nrow = 4) +
-##     scale_fill_viridis_c()
-
-
-## ## With tuner defaults
-## wintime <- 25
+## mm2 <- mm1
+## fs <- mm2@samp.rate
+## mm2@left <- c(seewave::synth(fs, 0.1, 4e3)[,1], mm2@left, seewave::synth(fs, 0.1, 4e3)[,1])
+## wintime <- 20
 ## steptime <- 10
+## ## Alignment is consistent at beginning for all methods
 ## list(seewave = 'seewave', phontools = 'phontools', tuner = 'tuner', gsignal = 'gsignal') |>
-##     map(\(method) spectrogram(mm1, method = method, wintime = wintime, steptime = steptime)) |>
+##     map(\(method) spectrogram(mm2, method = method, wintime = wintime, steptime = steptime, pad_end = T)) |>
 ##     bind_rows(.id = 'method') |>
 ##     mutate(method = factor(method, levels = c('seewave', 'phontools', 'tuner', 'gsignal'))) |>
 ##     group_by(method) |>
@@ -207,21 +157,19 @@ test_that("Package defaults can be achieved with wrapper", {
 ##     ungroup() |>
 ##     ggplot() +
 ##     geom_raster(aes(t, f, fill = amp), alpha = 0.9, show.legend = F) +
-##     geom_vline(xintercept = length(mm1) / fs, colour = 'red') +
+##     geom_vline(xintercept = 0.1 + c(-0.01, 0.01), colour = 'red') +
 ##     scale_x_continuous(expand = c(0,0),
-##                        breaks = seq_len(500) * steptime * 2e-3,
+##                        breaks = seq_len(500) * wintime * 1e-3,
 ##                        minor_breaks = seq_len(1000) * steptime * 1e-3, labels = \(x) sprintf("%0.3f", x)
 ##                        ) +
 ##     scale_y_continuous(expand = c(0,0)) +
-##     coord_cartesian(xlim = c(2.5, 2.66)) +
+##     coord_cartesian(xlim = c(0, 0.5)) +
 ##     facet_wrap(. ~ method, nrow = 4) +
 ##     scale_fill_viridis_c()
 
-## ## With gsignal defaults
-## wintime <- 1e3 * 256 / mm1@samp.rate
-## steptime <- 1e3 * 128 / mm1@samp.rate
+## ## But seewave stretches the signal at the end
 ## list(seewave = 'seewave', phontools = 'phontools', tuner = 'tuner', gsignal = 'gsignal') |>
-##     map(\(method) spectrogram(mm1, method = method, wintime = wintime, steptime = steptime)) |>
+##     map(\(method) spectrogram(mm2, method = method, wintime = wintime, steptime = steptime, pad_end = T)) |>
 ##     bind_rows(.id = 'method') |>
 ##     mutate(method = factor(method, levels = c('seewave', 'phontools', 'tuner', 'gsignal'))) |>
 ##     group_by(method) |>
@@ -230,25 +178,13 @@ test_that("Package defaults can be achieved with wrapper", {
 ##     ungroup() |>
 ##     ggplot() +
 ##     geom_raster(aes(t, f, fill = amp), alpha = 0.9, show.legend = F) +
-##     geom_vline(xintercept = length(mm1) / fs, colour = 'red') +
+##     geom_vline(xintercept = ((0.1) + (length(mm1)/fs)) + c(-0.01, 0, 0.01), colour = 'red') +
 ##     scale_x_continuous(expand = c(0,0),
-##                        breaks = seq_len(500) * steptime * 2e-3,
+##                        breaks = seq_len(500) * wintime * 1e-3,
 ##                        minor_breaks = seq_len(1000) * steptime * 1e-3, labels = \(x) sprintf("%0.3f", x)
 ##                        ) +
 ##     scale_y_continuous(expand = c(0,0)) +
-##     coord_cartesian(xlim = c(2.5, 2.66)) +
+##     coord_cartesian(xlim = c(2.6, 2.8)) +
 ##     facet_wrap(. ~ method, nrow = 4) +
 ##     scale_fill_viridis_c()
-
-
-## Seewave aligns end of last window with length of audio file in all cases. phonTools and tuneR do not
-
-## ## Confirm that phonTools doesn't deal with error in plot method
-## spec <- phonTools::spectrogram(mm1@left, mm1@samp.rate, show = F)
-## par(mfrow = c(2,1))
-## plot(spec, xlim = c(2500, 2650))
-## abline(v = 1e3 * length(mm1) / fs, col = 'red')
-## with(spectrogram(mm1, method = 'phontools', output = 'list', wintime = 5, steptime = length(mm1) / mm1@samp.rate),
-##      image(time, freq, amp, col = hcl.colors(20), xlim = c(2.5, 2.65)))
-## abline(v = length(mm1) / fs, col = 'red')
 
