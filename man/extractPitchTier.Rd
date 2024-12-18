@@ -4,31 +4,22 @@
 \alias{extractPitchTier}
 \title{extractPitchTier}
 \usage{
-extractPitchTier(
-  x = "A01",
-  res = 0.1,
-  fmin = 50,
-  fmax = 250,
-  stylize = 1,
-  wd = getwd()
-)
+extractPitchTier(wav, res = 0.1, fmin = 50, fmax = 250, output = "PitchTier")
 }
 \arguments{
-\item{x}{name of wav file}
+\item{wav}{path to a wav file or a tuneR WAVE object}
 
-\item{res}{resolution (Praat)}
+\item{res}{resolution of PitchTier}
 
-\item{fmin}{minimum frequency (Praat)}
+\item{fmin}{minimum frequency of PitchTier}
 
-\item{fmax}{maximum frequency (Praat)}
+\item{fmax}{maximum frequency of PitchTier}
 
-\item{stylize}{stylize (Praat)}
-
-\item{wd}{working directory for Praat to use}
+\item{output}{can be "PitchTier" or "file"}
 }
 \value{
-Runs script in Praat and prints stdout to console.
+Returns a PitchTier object or the temporary path to the generated PitchTier file
 }
 \description{
-Extracts Praat PitchTier from wav object.
+Extracts "Praat" PitchTier from wav object.
 }

@@ -4,18 +4,16 @@
 \alias{write_tg}
 \title{write_tg}
 \usage{
-write_tg(x, name, path = ".")
+write_tg(x, file)
 }
 \arguments{
 \item{x}{Nested tibble. Must contain the columns `name`, `type` and `data`. `data` must have the columns `t1`, `t2` and `label`}
 
-\item{name}{File name to save TextGrid as}
-
-\item{path}{Path to save folder. Default is working directory.}
+\item{file}{File name to save TextGrid as}
 }
 \value{
 Returns path of saved TextGrid file
 }
 \description{
-Writes a nested tibble to a Praat TextGrid file
+Writes a nested tibble to a "Praat" TextGrid file
 }

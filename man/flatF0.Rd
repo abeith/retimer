@@ -4,17 +4,17 @@
 \alias{flatF0}
 \title{flatF0}
 \usage{
-flatF0(filename, .f = findPeak, wd = getwd())
+flatF0(wav, .f = findPeak, ...)
 }
 \arguments{
-\item{filename}{name of wav file to flatten}
+\item{wav}{path to a wav file or a tuneR WAVE object}
 
-\item{.f}{function to use to determine pitch}
+\item{.f}{function to use to determine pitch. Default is findPeak which finds the mode of the existing pitch contour.}
 
-\item{wd}{working directory for praat to use}
+\item{...}{Additional arguments passed to extractPitchTier}
 }
 \value{
-Creates wav file with flat F0 contour.
+Returns a tuneR WAVE object of the input with a flat F0 contour
 }
 \description{
 Flatten pitch

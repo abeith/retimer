@@ -4,7 +4,6 @@ form Specify file
     positive resolution 0.1
     positive min 50
     positive max 250
-    boolean stylize 1
     text wd
 endform
 
@@ -12,10 +11,6 @@ endform
 inSound = Read from file: wd$ + "/" + inFile$ + ".wav"
 manipulation = To Manipulation: resolution, min, max
 pitchTier = Extract pitch tier
-# pitchTier = Stylize: 2, "Semitones"
-if stylize = 1
-  pitchTier = Interpolate quadratically: 4, "Semitones"
-endif
 
 # Add points to start and end of pitch tier
 minT = Get time from index: 1

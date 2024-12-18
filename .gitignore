@@ -9,3 +9,4 @@ notes
 .Rbuildignore
 /CRAN-SUBMISSION
 inst/doc
+/retimer.org

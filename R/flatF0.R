@@ -2,35 +2,42 @@
 #'
 #' Flatten pitch
 #'
-#' @param filename name of wav file to flatten
-#' @param .f function to use to determine pitch
-#' @param wd working directory for praat to use
+#' @param wav path to a wav file or a tuneR WAVE object
+#' @param .f function to use to determine pitch. Default is findPeak which finds the mode of the existing pitch contour.
+#' @param ... Additional arguments passed to extractPitchTier
 #'
-#' @return Creates wav file with flat F0 contour.
+#' @return Returns a tuneR WAVE object of the input with a flat F0 contour
 #'
 #' @seealso extractPitchTier
+#' @export
 
-flatF0 <- function(filename, .f = findPeak, wd = getwd()){
+flatF0 <- function(wav, .f = findPeak, ...){
 
-  wd <- normalizePath(wd)
+  ## Extract PitchTier
+  pt_file <- extractPitchTier(wav, ..., output = "file")
+  pt <- rPraat::pt.read(pt_file)
 
-  # Extract Pitch Tier
-  extractPitchTier(x = filename, wd = wd)
+  ## Create flat PitchTier
+  pt_flat <- pt
+  pt_flat$t <- range(pt$t)
+  pt_flat$f <- rep(.f(pt$f), 2)
 
-  # Read Pitch Tier
-  pitchTier <- rPraat::pt.read(paste0(wd, "/", filename, ".PitchTier"))
+  ## Write new PitchTier
+  base_file <- gsub(".PitchTier$", "", basename(pt_file))
+  wd <- dirname(pt_file)
+  pt_flat_base <- paste0(base_file, "_flat.PitchTier")
+  pt_flat_file <- file.path(wd, pt_flat_base)
+  rPraat::pt.write(pt_flat, pt_flat_file)
 
-  # Create new pitch tier
-  newPitchTier <- pitchTier
-  newPitchTier$t <- c(min(pitchTier$t), max(max(pitchTier$t)))
-  newPitchTier$f <- c(rep(.f(pitchTier$f), 2))
+  ## Build the command
+  script <- system.file("extdata/praat", "reSynthPitch.praat", package = "retimer")
+  args <- paste("--run", script, base_file, pt_flat_base, wd)
 
-  funName <- as.character(substitute(.f))
+  ## Run script
+  praatSys(args = args)
 
-  # Write PT
-  rPraat::pt.write(newPitchTier, paste0(wd, "/", filename, "_", funName, ".PitchTier"))
+  ## Read wav file
+  wav_out <- tuneR::readWave(file.path(wd, paste0(base_file, "_resynth.wav")))
 
-  # Resynthesise
-  praatScript(args = paste(filename, funName), script = "reSynthPitch.praat", wd = "./data")
-
+  return(wav_out)
 }
