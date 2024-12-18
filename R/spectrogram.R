@@ -80,14 +80,14 @@ seewave_spectro <- function(sig, fs, wintime, steptime) {
     step <- fs*steptime/1e3
     ovlp <- 100 * (1 - (step/wl))
     
-    spec <- seewave::spectro(sig, fs, plot = F, wl = wl, ovlp = ovlp)
+    spec <- seewave::spectro(sig, fs, plot = FALSE, wl = wl, ovlp = ovlp)
     spec$amp <- t(spec$amp)
     spec$freq <- spec$freq * 1e3
     return(spec)
 }
 
 phontools_spectro <- function(sig, fs, wintime, steptime) {
-    phontools_spec <- phonTools::spectrogram(sig, fs, show = F, windowlength = wintime, timestep = steptime)
+    phontools_spec <- phonTools::spectrogram(sig, fs, show = FALSE, windowlength = wintime, timestep = steptime)
     spec_attr <- with(phontools_spec,
                       list(
                           method = "phontools",

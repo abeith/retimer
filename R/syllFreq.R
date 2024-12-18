@@ -8,7 +8,7 @@ syllFreq <- function(x, silence = "_", freq = TRUE){
     tidyr::unnest(cols = c(data)) %>%
     dplyr::filter(label != silence) %>%
     dplyr::mutate(interval = t1 - dplyr::lag(t1)) %>%
-    dplyr::summarise(interval = findPeak(interval, na.rm = T)) %>%
+    dplyr::summarise(interval = findPeak(interval, na.rm = TRUE)) %>%
     dplyr::pull(interval)
 
   if(freq){

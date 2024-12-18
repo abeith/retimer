@@ -34,8 +34,8 @@ praatSys <- function(args = "--version", praat = NULL, ...){
 
   system2(praat, args, stdout = stdout, stderr = stderr)
 
-  stdout_chr <- readLines(stdout, skipNul = T)
-  stderr_chr <- readLines(stderr, skipNul = T)
+  stdout_chr <- readLines(stdout, skipNul = TRUE)
+  stderr_chr <- readLines(stderr, skipNul = TRUE)
 
   stdout_chr <- stdout_chr[stdout_chr != ""]
   stderr_chr <- stderr_chr[stderr_chr != ""]
@@ -51,7 +51,7 @@ get_praat_path <- function(appDir = "C:/Program Files"){
   find_praat_windows <- function(path){
 
     # get full path to executable
-    exe <- list.files(path, ".exe", full.names = T)
+    exe <- list.files(path, ".exe", full.names = TRUE)
 
     # make tmp file for stdout (see https://github.com/praat/praat/issues/1033)
     stdout <- tempfile(pattern = "stdout", fileext = ".txt")
@@ -59,7 +59,7 @@ get_praat_path <- function(appDir = "C:/Program Files"){
     # get version
     system2(exe, "--version", stdout = stdout, stderr = NULL)
 
-    praat_version <- readLines(stdout, skipNul = T) %>%
+    praat_version <- readLines(stdout, skipNul = TRUE) %>%
       paste(collapse = " ") %>%
       trimws()
 
@@ -73,7 +73,7 @@ get_praat_path <- function(appDir = "C:/Program Files"){
   }
 
   # arrange praat versions in tibble
-  praat_versions <- list.files(appDir, "praat", full.names = T, ignore.case = T) %>%
+  praat_versions <- list.files(appDir, "praat", full.names = TRUE, ignore.case = TRUE) %>%
     purrr::map(find_praat_windows) %>%
     dplyr::bind_rows() %>%
     dplyr::arrange(v1, v2, v3)

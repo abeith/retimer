@@ -14,7 +14,7 @@
 ##' @seealso wsola
 ##' @export
 
-get_serial_anchors <- function(anc_in, anc_out, w_onsets, w_offsets, fs = NULL, retime_f = NULL, dry_run = F, smudge = 0){
+get_serial_anchors <- function(anc_in, anc_out, w_onsets, w_offsets, fs = NULL, retime_f = NULL, dry_run = FALSE, smudge = 0){
     ## Check if retiming is possible
     intervals_in <- anc_in[2:length(anc_in)] - anc_in[1:(length(anc_in)-1)]
     intervals_out <- anc_out[2:length(anc_out)] - anc_out[1:(length(anc_out)-1)]

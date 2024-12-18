@@ -40,7 +40,7 @@ wsola <- function(x, s, win = 'hann', winLen = 1024, synHop = 512, tol = 512){
   ## Time stretch function
   outputLength <- anc_out[length(anc_out)]
   synWinPos <- seq(1, outputLength + winLenHalf, synHop)
-  anaWinPos <- round(signal::interp1(anc_out, anc_in, synWinPos, extrap = T))
+  anaWinPos <- round(signal::interp1(anc_out, anc_in, synWinPos, extrap = TRUE))
   anaHop <- c(0, anaWinPos[2:length(anaWinPos)] - anaWinPos[1:(length(anaWinPos) - 1)])
 
   ## wsola

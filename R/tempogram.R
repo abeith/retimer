@@ -29,7 +29,7 @@ tempogram <- function(x, sr = 250, window = 200, hop = 100){
 
   get_acf <- function(x){
     x <- as.vector(x)
-    stats::acf(x, lag.max = length(x), plot = F)[["acf"]]
+    stats::acf(x, lag.max = length(x), plot = FALSE)[["acf"]]
   }
 
   acf_result <- apply(c, 2, get_acf)
