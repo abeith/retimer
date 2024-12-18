@@ -50,9 +50,9 @@ tempogram <- function(x, sr = 250, window = 200, hop = 100){
 
   colnames(acf_result) <- times
 
-  acf.tbl <- cbind(lags, acf_result) %>%
-    tibble::as_tibble() %>%
-    tidyr::gather(t, acf, -lags) %>%
+  acf.tbl <- cbind(lags, acf_result) |>
+    tibble::as_tibble() |>
+    tidyr::gather(t, acf, -lags) |>
     dplyr::mutate(t = as.numeric(t)/sr,
                   lags = lags/sr,
                   f = 1/lags)

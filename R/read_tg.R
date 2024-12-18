@@ -19,11 +19,11 @@ read_tg <- function(file, encoding = 'auto'){
   tg <- rPraat::tg.read(file, encoding = 'auto')
 
   # Tidy
-  tidy_grid <- tg %>%
-    purrr::map(tibble::as_tibble) %>%
-    dplyr::bind_rows() %>%
-    dplyr::group_by(name, type) %>%
-    tidyr::nest() %>%
+  tidy_grid <- tg |>
+    purrr::map(tibble::as_tibble) |>
+    dplyr::bind_rows() |>
+    dplyr::group_by(name, type) |>
+    tidyr::nest() |>
     dplyr::ungroup()
 
   return(tidy_grid)

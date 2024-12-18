@@ -38,20 +38,18 @@ fft_spectro <- function(x, f_out = 80, window_size = 256, padding = 2048, plot =
   # define cutoffs
   low <- 1:(length(env) - window_size)
   high <- (window_size + 1):length(env)
-  spec <- purrr::map2(low, high,
-                      ~fft_spec_pwr(env[.x:.y], f_out, padding) %>%
-                        tibble::as_tibble())
+  spec <- purrr::map2(low, high, \(x, y) fft_spec_pwr(env[x:y], f_out, padding) |> tibble::as_tibble())
 
   nested_spec <- tibble::tibble(t = (low + high)/(f_out * 2), #denominator is 2 (to average) * 80 (sample rate)
                                spec = spec)
 
-  df_out <- nested_spec %>%
-    tidyr::unnest() %>%
-    dplyr::filter(freq <= 8) %>%
+  df_out <- nested_spec |>
+    tidyr::unnest() |>
+    dplyr::filter(freq <= 8) |>
     dplyr::select(freq, t, pwr)
 
   if(plot){
-    p <- df_out %>%
+    p <- df_out |>
       ggplot2::ggplot(ggplot2::aes(t, freq, fill = pwr)) +
       ggplot2::geom_raster()
 

@@ -13,6 +13,9 @@ write_tg(x, name, path = ".")
 
 \item{path}{Path to save folder. Default is working directory.}
 }
+\value{
+Returns path of saved TextGrid file
+}
 \description{
 Writes a nested tibble to a Praat TextGrid file
 }

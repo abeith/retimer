@@ -11,7 +11,7 @@ get_serial_anchors(
   w_offsets,
   fs = NULL,
   retime_f = NULL,
-  dry_run = F,
+  dry_run = FALSE,
   smudge = 0
 )
 }

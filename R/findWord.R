@@ -19,8 +19,8 @@ findWord <- function(x, word = "speech", tier = "Word", ignore_case = TRUE){
 
   query <- stringr::regex(paste0("^", word, "$"), ignore_case = ignore_case)
 
-  read_tg(x) %>%
-    dplyr::filter(name == tier) %>%
-    tidyr::unnest(cols = c(data)) %>%
+  read_tg(x) |>
+    dplyr::filter(name == tier) |>
+    tidyr::unnest(cols = c(data)) |>
     dplyr::filter(stringr::str_detect(label, query))
 }

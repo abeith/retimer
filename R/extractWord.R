@@ -19,7 +19,7 @@ extractWord <- function(x, word, tier = "Word", ignore_case = TRUE, instance = "
 
   name <- stringr::str_extract(x, "[^/]*(?=.TextGrid)")
 
-  word_dat <- findWord(x, word = word, tier = tier, ignore_case = ignore_case) %>%
+  word_dat <- findWord(x, word = word, tier = tier, ignore_case = ignore_case) |>
     dplyr::mutate(row = dplyr::row_number())
 
   if(instance == "random"){

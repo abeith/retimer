@@ -59,8 +59,8 @@ get_praat_path <- function(appDir = "C:/Program Files"){
     # get version
     system2(exe, "--version", stdout = stdout, stderr = NULL)
 
-    praat_version <- readLines(stdout, skipNul = TRUE) %>%
-      paste(collapse = " ") %>%
+    praat_version <- readLines(stdout, skipNul = TRUE) |>
+      paste(collapse = " ") |>
       trimws()
 
     # send version info to console
@@ -68,14 +68,14 @@ get_praat_path <- function(appDir = "C:/Program Files"){
 
     # make df with numerical version info
     tibble::tibble(path = exe,
-           version = stringr::str_extract(praat_version, "(?<=Praat )[\\d\\.]+")) %>%
+           version = stringr::str_extract(praat_version, "(?<=Praat )[\\d\\.]+")) |>
       tidyr::separate(version, c("v1", "v2", "v3"), convert = TRUE)
   }
 
   # arrange praat versions in tibble
-  praat_versions <- list.files(appDir, "praat", full.names = TRUE, ignore.case = TRUE) %>%
-    purrr::map(find_praat_windows) %>%
-    dplyr::bind_rows() %>%
+  praat_versions <- list.files(appDir, "praat", full.names = TRUE, ignore.case = TRUE) |>
+    purrr::map(find_praat_windows) |>
+    dplyr::bind_rows() |>
     dplyr::arrange(v1, v2, v3)
 
   # get most recent
