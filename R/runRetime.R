@@ -28,13 +28,13 @@ runRetime <- function(audio, grid, outfile, wd = getwd()){
                    paste0("\"", wd, "\""))
 
   # Print command in console
-  cat(paste("Running:", command))
+  message(paste("Running:", command))
 
   # Run
   if(.Platform$OS.type == "windows"){
     tmpfile <- tempfile(fileext = ".txt")
     shell(paste(command, ">", tmpfile))
-    cat(readLines(tmpfile, skipNul = TRUE))
+    message(readLines(tmpfile, skipNul = TRUE))
   }else{
     system(command)
   }

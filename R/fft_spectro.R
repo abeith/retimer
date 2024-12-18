@@ -35,10 +35,7 @@ fft_spectro <- function(x, f_out = 80, window_size = 256, padding = 2048, plot =
   # Get vocalic envelope
   env <- voc_env(wav@left, wav@samp.rate, f_out)
 
-  cat(sprintf("Using %0.2fs window\n", window_size/f_out))
-
   # define cutoffs
-
   low <- 1:(length(env) - window_size)
   high <- (window_size + 1):length(env)
   spec <- purrr::map2(low, high,

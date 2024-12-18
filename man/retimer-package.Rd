@@ -6,7 +6,7 @@
 \alias{retimer-package}
 \title{retimer: Retime and Analyse Speech Signals}
 \description{
-Tools used for retiming and analysis of speech with R and Praat.
+Retime speech signals with a native Waveform Similarity Overlap-Add (WSOLA) implementation translated from the 'TSM toolbox' by Driedger & Müller (2014) \url{https://www.audiolabs-erlangen.de/content/resources/MIR/TSMtoolbox/2014_DriedgerMueller_TSM-Toolbox_DAFX.pdf}. Design retimings and pitch (f0) transformations with tidy data and apply them via 'Praat' interface. Produce spectrograms, spectra, and amplitude envelopes. Includes implementation of vocalic speech envelope analysis (fft_spectrum) technique and example data (mm1) from Tilsen, S., & Johnson, K. (2008) \doi{10.1121/1.2947626}.
 }
 \author{
 \strong{Maintainer}: Alistair Beith \email{alistair.beith@gmail.com} [copyright holder]

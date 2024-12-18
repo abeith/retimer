@@ -33,6 +33,6 @@ reTimeWin <- function(name = filename, newName= "retimed", praatPath = getPraatP
     paste0("\\")
 
   args <- paste("--run", script, name, newName, wd)
-  cat(paste("Running:", praatPath, args, "\n"))
+  message(paste("Running:", praatPath, args, "\n"))
   system(paste(praatPath, args))
 }

@@ -25,7 +25,7 @@ praatScript <- function(args,
   wd <- paste0("\"", normalizePath(wd), "\"")
 
   command <- paste("--run", script, args, wd)
-  cat(paste("Running: praat", command, "\n"))
+  message(paste("Running: praat", command, "\n"))
 
   praatSys(args = command, praat = praat)
 }
