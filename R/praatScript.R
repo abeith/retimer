@@ -8,7 +8,6 @@
 #' @param praat path to Praat. If null will search for Praat in C:/Program Files (for Windows) or attempt to use "praat" for Unix based systems.
 #'
 #' @return Runs script in Praat and prints stdout to console.
-#' @export
 #'
 
 praatScript <- function(args,
@@ -16,16 +15,18 @@ praatScript <- function(args,
                         wd = getwd(),
                         praat = NULL){
 
-  # Check if user is calling a retimer praat script
-  if(file.exists(system.file("extdata/praat", script, package = "retimer"))){
-    script <- system.file("extdata/praat", script, package = "retimer")
-  }
+    .Deprecated("praatSys")
+    
+                                        # Check if user is calling a retimer praat script
+    if(file.exists(system.file("extdata/praat", script, package = "retimer"))){
+        script <- system.file("extdata/praat", script, package = "retimer")
+    }
 
-  script <- paste0("\"", normalizePath(script), "\"")
-  wd <- paste0("\"", normalizePath(wd), "\"")
+    script <- paste0("\"", normalizePath(script), "\"")
+    wd <- paste0("\"", normalizePath(wd), "\"")
 
-  command <- paste("--run", script, args, wd)
-  message(paste("Running: praat", command, "\n"))
+    command <- paste("--run", script, args, wd)
+    message(paste("Running: praat", command, "\n"))
 
-  praatSys(args = command, praat = praat)
+    praatSys(args = command, praat = praat)
 }

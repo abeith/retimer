@@ -1,6 +1,6 @@
 #' extractWord
 #'
-#' Extract from a wav file with reference to a TextGrid
+#' Extract from a wav file with reference to a TextGrid. 
 #'
 #' @param x path to a TextGrid
 #' @param word word to search for
@@ -10,7 +10,6 @@
 #' @param wd working directory for Praat to use. Accepts relative paths.
 #'
 #' @return Extracts section of wav file corresponding to word and saves in format name_wordi.wav where name is the original name, word is the word and x is the numeric instance.
-#' @export
 #'
 #' @seealso density
 
