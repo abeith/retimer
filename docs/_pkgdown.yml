@@ -1,0 +1,27 @@
+reference:
+- title: "Praat"
+  desc: >
+    Functions for working with Praat
+  contents:
+    - extractPitchTier
+    - findWord
+    - flatF0
+    - praatRetime
+    - praatSys
+- title: "Analysis"
+  desc: >
+    Native functions for performing speech analysis in R
+  contents:
+    - extract_env
+    - fft_spectro
+    - fft_spectrum
+- title: "Manipulation"
+  desc: >
+    Native functions for performing speech manipulations in R
+  contents:
+    - get_serial_anchors    
+- title: "Utility"
+  desc: >
+    General utility functions
+  contents:
+    - findPeak
