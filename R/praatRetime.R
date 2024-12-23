@@ -10,6 +10,7 @@
 #' @return A wav file with the timing of the second tier of the TextGrid will be saved to the outfile location.
 #' 
 #' @examples
+#' set.seed(42)
 #' data(mm1)
 #' dur <- length(mm1)/mm1@samp.rate
 #'

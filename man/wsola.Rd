@@ -25,6 +25,16 @@ retimed audio signal as vector
 \description{
 Waveform Similarity Overlap-add. Translated from TSM Toolbox.
 }
+\examples{
+set.seed(42)
+data(mm1)
+dur <- length(mm1)
+n <- 10
+x <- runif(n)
+anchors <- list(anc_in = c(0, dur*seq_len(n)/n),
+                anc_out = c(0, dur*cumsum(x)/sum(x)))
+sig <- wsola(mm1@left, anchors)
+}
 \references{
 Driedger, J., Müller, M. (2014). TSM Toolbox: MATLAB Implementations of Time-Scale Modification Algorithms. In Proceedings of the International Conference on Digital Audio Effects (DAFx): 249–256.
 }
