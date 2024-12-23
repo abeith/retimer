@@ -1,6 +1,6 @@
 #' findPeak
 #'
-#' Call Praat via system2()
+#' Find the mode of numeric vector using the peak of its density distribution.
 #'
 #' @param x a numeric vector
 #' @param ... further arguements to be passed to `density`

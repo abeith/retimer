@@ -1,6 +1,6 @@
 #' write_tg
 #'
-#' Writes a nested tibble to a "Praat" TextGrid file
+#' Writes a nested tibble to a 'Praat' TextGrid file
 #'
 #' @param x Nested tibble. Must contain the columns `name`, `type` and `data`. `data` must have the columns `t1`, `t2` and `label`
 #' @param file File name to save TextGrid as

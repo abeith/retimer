@@ -1,9 +1,9 @@
 #' praatSys
 #'
-#' Call Praat via system2()
+#' Call 'Praat' via system2()
 #'
-#' @param args arguements to pass to Praat
-#' @param praat path to Praat. If null will search for Praat in C:/Program Files (for Windows) or attempt to use "praat" for Unix based systems.
+#' @param args arguements to pass to 'Praat'
+#' @param praat path to 'Praat'. If null will search for 'Praat' in C:/Program Files (for Windows) or attempt to use "praat" for Unix based systems.
 #' @param ... arguements to pass to internal get_praat_path() function. This can be used to change the folder to look for R in for Windows (default is appDir = "C:/Program Files")
 #'
 #' @return Prints stdout to console

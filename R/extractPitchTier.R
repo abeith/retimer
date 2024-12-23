@@ -1,6 +1,6 @@
 #' extractPitchTier
 #'
-#' Extracts "Praat" PitchTier from wav object.
+#' Extracts 'Praat' PitchTier from wav object.
 #'
 #' @param wav path to a wav file or a tuneR WAVE object
 #' @param res resolution of PitchTier

@@ -1,6 +1,6 @@
 #' read_tg
 #'
-#' Reads a Praat TextGrid as a nested tibble
+#' Reads a 'Praat' TextGrid as a nested tibble
 #'
 #' @param file path to TextGrid file
 #' @param encoding Passed to rPraat::tg.read: 'auto' (default) will detect encoding, or can be set to 'UTF-8' (rPraat default)

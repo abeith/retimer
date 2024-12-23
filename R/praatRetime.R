@@ -1,7 +1,7 @@
 #' praatRetime
 #'
 #' @param wav path to a wav file or a tuneR WAVE object
-#' @param tg a "Praat" TextGrid object with 2 tiers: First tier should be
+#' @param tg a 'Praat' TextGrid object with 2 tiers: First tier should be
 #' intervals in the input audio file and second tier should be the same
 #' intervals with the desired onsets (t1) and offsets (t2).
 #'

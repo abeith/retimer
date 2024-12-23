@@ -1,6 +1,6 @@
 #' flatF0
 #'
-#' Flatten pitch
+#' Flatten fundamental frequency contour using 'Praat'
 #'
 #' @param wav path to a wav file or a tuneR WAVE object
 #' @param .f function to use to determine pitch. Default is findPeak which finds the mode of the existing pitch contour.
