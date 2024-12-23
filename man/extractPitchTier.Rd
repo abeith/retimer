@@ -21,5 +21,5 @@ extractPitchTier(wav, res = 0.1, fmin = 50, fmax = 250, output = "PitchTier")
 Returns a PitchTier object or the temporary path to the generated PitchTier file
 }
 \description{
-Extracts "Praat" PitchTier from wav object.
+Extracts 'Praat' PitchTier from wav object.
 }

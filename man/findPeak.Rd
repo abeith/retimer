@@ -15,7 +15,7 @@ findPeak(x, ...)
 Returns the value of `x` that corresponds to the peak of the density curve.
 }
 \description{
-Call Praat via system2()
+Find the mode of numeric vector using the peak of its density distribution.
 }
 \seealso{
 density

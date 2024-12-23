@@ -17,7 +17,7 @@ flatF0(wav, .f = findPeak, ...)
 Returns a tuneR WAVE object of the input with a flat F0 contour
 }
 \description{
-Flatten pitch
+Flatten fundamental frequency contour using 'Praat'
 }
 \seealso{
 extractPitchTier

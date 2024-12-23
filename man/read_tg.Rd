@@ -15,5 +15,5 @@ read_tg(file, encoding = "auto")
 Returns a nested tibble with `name`, `type` and `data`. `data` has the variables `t1`, `t2` and `label`
 }
 \description{
-Reads a Praat TextGrid as a nested tibble
+Reads a 'Praat' TextGrid as a nested tibble
 }

@@ -9,7 +9,7 @@ praatRetime(wav, tg)
 \arguments{
 \item{wav}{path to a wav file or a tuneR WAVE object}
 
-\item{tg}{a "Praat" TextGrid object with 2 tiers: First tier should be
+\item{tg}{a 'Praat' TextGrid object with 2 tiers: First tier should be
 intervals in the input audio file and second tier should be the same
 intervals with the desired onsets (t1) and offsets (t2).}
 }
@@ -38,8 +38,11 @@ tg <- dplyr::tibble(
                label = rep(letters[1:10], times = 2)
              ) |>
   tidyr::nest(data = c(t1, t2, label))
-
-wav_retimed <- praatRetime(mm1, tg)
+if (Sys.which("praat") != "") {
+ wav_retimed <- praatRetime(mm1, tg)
+} else {
+ message("Skipping example because Praat is not installed.")
+}
 }
 \seealso{
 [read_tg()] for reading an existing TextGrid and [write_tg()] for saving a tibble as a TextGrid.

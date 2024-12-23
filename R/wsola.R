@@ -1,6 +1,6 @@
 #' wsola
 #'
-#' Waveform Similarity Overlap-add. Translated from TSM Toolbox.
+#' Waveform Similarity Overlap-add. Translated from 'TSM Toolbox'.
 #'
 #' @param x an audio signal
 #' @param s a scaling factor or a list of two vector with anchor points

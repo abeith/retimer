@@ -23,7 +23,7 @@ wsola(x, s, win = "hann", winLen = 1024, synHop = 512, tol = 512)
 retimed audio signal as vector
 }
 \description{
-Waveform Similarity Overlap-add. Translated from TSM Toolbox.
+Waveform Similarity Overlap-add. Translated from 'TSM Toolbox'.
 }
 \examples{
 set.seed(42)

@@ -15,5 +15,5 @@ write_tg(x, file)
 Returns path of saved TextGrid file
 }
 \description{
-Writes a nested tibble to a "Praat" TextGrid file
+Writes a nested tibble to a 'Praat' TextGrid file
 }

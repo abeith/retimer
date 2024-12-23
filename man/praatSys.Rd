@@ -7,9 +7,9 @@
 praatSys(args = "--version", praat = NULL, ...)
 }
 \arguments{
-\item{args}{arguements to pass to Praat}
+\item{args}{arguements to pass to 'Praat'}
 
-\item{praat}{path to Praat. If null will search for Praat in C:/Program Files (for Windows) or attempt to use "praat" for Unix based systems.}
+\item{praat}{path to 'Praat'. If null will search for 'Praat' in C:/Program Files (for Windows) or attempt to use "praat" for Unix based systems.}
 
 \item{...}{arguements to pass to internal get_praat_path() function. This can be used to change the folder to look for R in for Windows (default is appDir = "C:/Program Files")}
 }
@@ -17,7 +17,7 @@ praatSys(args = "--version", praat = NULL, ...)
 Prints stdout to console
 }
 \description{
-Call Praat via system2()
+Call 'Praat' via system2()
 }
 \seealso{
 system2

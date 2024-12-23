@@ -28,8 +28,11 @@
 #'                label = rep(letters[1:10], times = 2)
 #'              ) |>
 #'   tidyr::nest(data = c(t1, t2, label))
-#'
-#' wav_retimed <- praatRetime(mm1, tg)
+#' if (Sys.which("praat") != "") {
+#'  wav_retimed <- praatRetime(mm1, tg)
+#' } else {
+#'  message("Skipping example because Praat is not installed.")
+#' }
 #' @export
 
 praatRetime <- function(wav, tg) {
