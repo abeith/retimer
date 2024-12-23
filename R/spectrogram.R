@@ -4,7 +4,7 @@
 #'
 #' @param x a signal, `tuneR` WAVE object, or the path to an .wav or .mp3 file.
 #' @param fs sample rate if supplying the signal as a vector
-#' @param method spectrogram implementation to use
+#' @param method spectrogram implementation to use. Available options are 'phonTools', 'tuneR', 'gsignal', and 'seewave'. Default is to select the first of these methods that is available.
 #' @param output format of output
 #' @param wintime length of analysis window in ms
 #' @param steptime interval between steps in ms
@@ -12,9 +12,11 @@
 #' @return Returns a spectrogram in the desired format
 #'
 #' @export
-#'
 
-spectrogram <- function(x, fs = NULL, method, output = 'tibble', wintime = 25, steptime = 10) {
+spectrogram <- function(x, fs = NULL, method = NULL, output = 'tibble', wintime = 25, steptime = 10) {
+
+    if(!output %in% c("tibble", "list")) stop("output argument must be 'tibble' or 'list'")
+
     if(is.character(x)){
         wav <- read_wav_or_mp3(x)
         sig <- wav@left
@@ -26,13 +28,24 @@ spectrogram <- function(x, fs = NULL, method, output = 'tibble', wintime = 25, s
         sig <- x@left
         fs <- x@samp.rate
     } else {
-        stop("Unexpected argument for x")
+        stop("Unexpected argument for x. Should be a numeric vector, the path to a wav file, or a tuneR WAVE object.")
     }
     
     if (is.null(method)) {
-        stop("Method cannot be NULL. Available methods are seewave and phonTools.")
-    } else if (tolower(method) == 'seewave') {
-        warning("seewave::spectro() calculates time axis innacurately with a maximum error equal to the window length")
+        if(requireNamespace("phonTools")) {
+            method <- "phonTools"
+        } else if(requireNamespace("tuneR")) {
+            method <- "tuneR"
+        } else if(requireNamespace("gsignal")) {
+            method <- "gsignal"
+        } else if(requireNamespace("seewave")) {
+            method <- "seewave"
+        } else {
+            stop("No packages with compatible spectrogram methods available. Install phonTools, tuneR, gsignal, or seewave")
+        }
+    }
+    
+    if (tolower(method) == 'seewave') {
         spec <- seewave_spectro(sig, fs, wintime = wintime, steptime = steptime)
     } else if (tolower(method) == 'phontools') {
         spec <- phontools_spectro(sig, fs, wintime = wintime, steptime = steptime)
@@ -50,8 +63,6 @@ spectrogram <- function(x, fs = NULL, method, output = 'tibble', wintime = 25, s
         tbl <- spec2tbl(spec)
         return(tbl)
     }
-    
-
 }
 
 spec2tbl <- function(spec) {
@@ -72,7 +83,7 @@ gsignal_spectro <- function(sig, fs, wintime, steptime) {
     return(spec)
 }
 
-ceilpow2 <- \(x) 2^ceiling(log2(x))
+ceilpow2 <- function(x) 2^ceiling(log2(x))
 
 seewave_spectro <- function(sig, fs, wintime, steptime) {
 

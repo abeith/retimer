@@ -7,7 +7,7 @@
 spectrogram(
   x,
   fs = NULL,
-  method,
+  method = NULL,
   output = "tibble",
   wintime = 25,
   steptime = 10
@@ -18,7 +18,7 @@ spectrogram(
 
 \item{fs}{sample rate if supplying the signal as a vector}
 
-\item{method}{spectrogram implementation to use}
+\item{method}{spectrogram implementation to use. Available options are 'phonTools', 'tuneR', 'gsignal', and 'seewave'. Default is to select the first of these methods that is available.}
 
 \item{output}{format of output}
 
